@@ -1,0 +1,120 @@
+[window]
+decorations = "None"
+opacity = 0.96
+blur = true
+
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font",  style = "Bold" }
+bold = { family = "JetBrainsMono Nerd Font",  style = "ExtraBold" }
+italic = { family = "JetBrainsMono Nerd Font",  style = "BoldItalic" }
+bold_italic = { family = "JetBrainsMono Nerd Font",  style = "ExtraBoldItalic" }
+
+offset = { x = -1, y = -2 }
+size = 16
+
+[terminal.shell]
+program = "/bin/zsh"
+args = ["-l", "-c", "tmux attach || tmux"]
+
+[keyboard]
+# Alacritty merges these over its built-in defaults (there's no "clear all"
+# switch). To kill a default, re-bind its exact trigger to ReceiveChar, which
+# makes Alacritty pass the raw keystroke straight through to tmux instead of
+# acting on it. Net effect: Alacritty is a dumb renderer, tmux/nvim get every
+# key. (Swap any of these to action = "None" to fully swallow the key instead.)
+bindings = [
+  # --- unset Alacritty's defaults (pass through to tmux) ---
+  { key = "F",       mods = "Control|Shift", action = "ReceiveChar" },  # was SearchForward  -> neovim find
+  { key = "B",       mods = "Control|Shift", action = "ReceiveChar" },  # was SearchBackward
+  { key = "C",       mods = "Control|Shift", action = "ReceiveChar" },  # was Copy
+  { key = "Insert",  mods = "Shift",         action = "ReceiveChar" },  # was PasteSelection
+  { key = "PageUp",  mods = "Shift",         action = "ReceiveChar" },  # was ScrollPageUp   (tmux copy mode handles scrollback)
+  { key = "PageDown", mods = "Shift",        action = "ReceiveChar" },  # was ScrollPageDown
+  { key = "Home",    mods = "Shift",         action = "ReceiveChar" },  # was ScrollToTop
+  { key = "End",     mods = "Shift",         action = "ReceiveChar" },  # was ScrollToBottom
+  { key = "0",       mods = "Control",       action = "ReceiveChar" },  # was ResetFontSize
+  { key = "=",       mods = "Control",       action = "ReceiveChar" },  # was IncreaseFontSize
+  { key = "+",       mods = "Control",       action = "ReceiveChar" },  # was IncreaseFontSize
+  { key = "NumpadAdd",      mods = "Control", action = "ReceiveChar" },  # was IncreaseFontSize
+  { key = "-",       mods = "Control",       action = "ReceiveChar" },  # was DecreaseFontSize
+  { key = "NumpadSubtract", mods = "Control", action = "ReceiveChar" },  # was DecreaseFontSize
+  # --- your custom bindings (kept) ---
+  { key = "Up", mods = "Control|Shift", command = { program = "/home/dustin/.config/alacritty/adjust_opacity.sh", args = [ "+", "0.02" ] } },
+  { key = "Down", mods = "Control|Shift", command = { program = "/home/dustin/.config/alacritty/adjust_opacity.sh", args = [ "-", "0.02" ] } },
+  # TAB_L - Previous tmux window (Ctrl+Shift+Tab) -> Alt+p
+  { key = "Tab", mods = "Control|Shift", chars = "\u001bp" },
+  # TAB_R - Next tmux window (Ctrl+Tab) -> Alt+n
+  { key = "Tab", mods = "Control", chars = "\u001bn" },
+  # Move tmux window forward (Ctrl+Alt+Tab) -> CSI-u; tmux decodes as C-M-Tab
+  { key = "Tab", mods = "Control|Alt", chars = "\u001b[9;7u" },
+  # Move tmux window backward (Ctrl+Alt+Shift+Tab) -> CSI-u; tmux decodes as C-M-BTab
+  { key = "Tab", mods = "Control|Alt|Shift", chars = "\u001b[9;8u" },
+  # Shift+Backspace -> tmux S-BSpace (prefix+Shift+BSpace = previous-layout).
+  # Alacritty folds Shift+Backspace into plain Backspace, so inject a distinct
+  # CSI-u seq: DEL code 127 (Alacritty's backspace char) + modifier 2 (shift).
+  { key = "Backspace", mods = "Shift", chars = "\u001b[127;2u" },
+  # Shift+Space -> tmux S-Space (prefix+Shift+Space = next-layout). Same trick
+  # as Shift+Backspace: Alacritty folds Shift+Space into plain Space, so inject
+  # a distinct CSI-u seq: Space code 32 + modifier 2 (shift).
+  { key = "Space", mods = "Shift", chars = "\u001b[32;2u" },
+  # Ctrl+Enter -> tmux C-Enter (prefix+C-Enter = auto-pane split + swap). Same
+  # trick: Enter code 13 + modifier 5 (ctrl).
+  { key = "Enter", mods = "Control", chars = "\u001b[13;5u" },
+]
+
+# Kanagawa Alacritty Colors
+[colors.primary]
+# background = "0x181820"
+background = "0x1F1F28"
+foreground = "0xdcd7ba"
+
+[colors.normal]
+black = "0x090618"
+red = "0xc34043"
+green = "0x76946a"
+yellow = "0xc0a36e"
+blue = "0x7e9cd8"
+magenta = "0x957fb8"
+cyan = "0x6a9589"
+white = "0x787878"  # term7 - gray for dim text/hints (not actual white!)
+
+[colors.bright]
+black = "0x727169"
+red = "0xe82424"
+green = "0x98bb6c"
+yellow = "0xe6c384"
+blue = "0x7fb4ca"
+magenta = "0x938aa9"
+cyan = "0x7aa89f"
+white = "0xdcd7ba"
+
+[colors.selection]
+background = "0x2d4f67"
+foreground = "0xc8c093"
+
+[[colors.indexed_colors]]
+index = 16
+color = "0xffa066"
+
+[[colors.indexed_colors]]
+index = 17
+color = "0xff5d62"
+
+# [[colors.indexed_colors]]
+# index = 201
+# color = "0x181820"
+# color = "0x1F1F28"
+
+# [[colors.indexed_colors]]
+# index = 202
+# color = "0x7E9CD8"
+#
+# [[colors.indexed_colors]]
+# index = 203
+# # color = "0xffffff"
+# # color = "0x181820"
+# # color = "0x191921"
+# color = "0x7E9CD8"
+
+[terminal]
