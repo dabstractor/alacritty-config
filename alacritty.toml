@@ -1,7 +1,7 @@
 [window]
 decorations = "None"
 opacity = 0.96
-blur = true
+blur = false
 
 
 [font]
@@ -61,6 +61,11 @@ bindings = [
   # Ctrl+Enter -> tmux C-Enter (prefix+C-Enter = auto-pane split + swap). Same
   # trick: Enter code 13 + modifier 5 (ctrl).
   { key = "Enter", mods = "Control", chars = "\u001b[13;5u" },
+  # Ctrl+Shift+Enter -> tmux C-S-Enter (prefix+C-S-Enter = reverse split, then
+  # move cursor into the swapped app pane). Same trick: Enter code 13 + modifier
+  # 6 (ctrl=4 + shift=1 + 1 base). The more-specific Control|Shift binding wins
+  # over the plain Control one above when both modifiers are held.
+  { key = "Enter", mods = "Control|Shift", chars = "\u001b[13;6u" },
 ]
 
 # Kanagawa Alacritty Colors
