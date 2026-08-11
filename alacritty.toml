@@ -1,4 +1,10 @@
 [window]
+# Default initial window title. Deliberately NOT set via the --title CLI flag:
+# in Alacritty 0.17 --title PINS the title and blocks OSC updates, which would
+# defeat tmux's set-titles (dynamic "terminal"/"terminal - <app>"). The config
+# title sets only the INITIAL title, so tmux can still drive it at runtime.
+# CLI --title still overrides this per-window (e.g. cliphist's --title cliphist).
+title = "terminal"
 decorations = "None"
 opacity = 0.96
 blur = false
